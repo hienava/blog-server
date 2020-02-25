@@ -1,10 +1,9 @@
 import { prop, ModelType } from '@hasezoey/typegoose';
 import { BaseModel, schemaOptions } from '../../shared/base.model';
 import { UserRole } from './user-role.enum';
-import {AutoMap } from '@nartc/automapper';
 
 
-export class User extends BaseModel {
+export class User extends BaseModel<User> {
     @prop({
         required: [true, 'Username is required'],
         unique: true,
@@ -12,6 +11,14 @@ export class User extends BaseModel {
     })
     username: string;
 
+    @prop({
+        required: [true, 'email is required'],
+        unique: true,
+        minlength: [5, 'E-mail Must be at least 5 characters'],
+        maxlength: [30, 'E-mail Must be no more than 30 characters']
+
+    })
+    email: string;
     
     @prop({
         required: [true, 'Password is required'],
@@ -20,11 +27,9 @@ export class User extends BaseModel {
     password: string;
 
     @prop()
-    @AutoMap()
     firstName?: string;
 
     @prop()
-    @AutoMap()
     lastName?: string;
 
     @prop({ enum: UserRole, default: UserRole.User })

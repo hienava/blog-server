@@ -24,12 +24,13 @@ export class UserService extends BaseService<User> {
     }
 
     async register(vm: RegisterViewModel) {
-        const { username, password, firstName, lastName } = vm;
+        const { username, password, firstName, lastName, email } = vm;
 
         const newUser = this._model();
         newUser.username = username.trim().toLowerCase();
         newUser.firstName = firstName;
         newUser.lastName = lastName;
+        newUser.email = email;
 
         const salt = await genSalt(10);
         newUser.password = await hash(password, salt);

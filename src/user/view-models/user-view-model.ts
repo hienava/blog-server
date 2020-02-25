@@ -7,6 +7,8 @@ import { EnumToArray } from '../../shared/utilities/enum-to-array';
 export class UserViewModel extends BaseViewModel {
     @ApiProperty() 
     username: string;
+    @ApiProperty() 
+    email: string;
     @ApiPropertyOptional() 
     firstName?: string;
     @ApiPropertyOptional() 

@@ -1,5 +1,5 @@
-import { Body, Controller, HttpException, HttpStatus, Post, UseGuards } from '@nestjs/common';
-import { ApiBadRequestResponse, ApiCreatedResponse, ApiOperation, ApiTags, ApiBearerAuth } from '@nestjs/swagger';
+import { Body, Controller, HttpException, HttpStatus, Post, Get, Query, UseGuards } from '@nestjs/common';
+import { ApiBadRequestResponse, ApiCreatedResponse, ApiOperation, ApiTags, ApiResponse, ApiQuery, ApiBearerAuth } from '@nestjs/swagger';
 import { ApiException } from '../shared/api-exception.model';
 import { GetOperationId } from '../shared/utilities/get-operation-id';
 import { User } from './models/user.model';
@@ -9,9 +9,14 @@ import { RegisterViewModel } from './view-models/register-view-model';
 import { UserViewModel } from './view-models/user-view-model';
 import { UserService } from './user.service';
 import { MapperUser } from './mapper/mapperUser';
+import { ProfileUserViewModel } from './view-models/profile-user-view-model';
+import { Roles } from 'src/shared/decorators/roles.decorator';
+import { UserRole } from './models/user-role.enum';
+import { AuthGuard } from '@nestjs/passport';
+import { RolesGuard } from '../shared/guards/roles.guard';
 
 @Controller('user')
-@ApiTags(User.modelName)
+@ApiTags('users')
 export class UserController {
     constructor(private readonly _userService: UserService) {}
 
@@ -45,6 +50,31 @@ export class UserController {
         const newUser = await this._userService.register(vm);
         console.log(newUser);
         return MapperUser.mapUser(newUser);
+    }
+
+    @ApiBearerAuth()
+    @Roles(UserRole.User, UserRole.Admin)
+    @UseGuards(AuthGuard('jwt'), RolesGuard)
+    @Get()
+    @ApiResponse({ status: HttpStatus.OK, type: ProfileUserViewModel, isArray: true })
+    @ApiResponse({ status: HttpStatus.BAD_REQUEST, type: ApiException })
+    @ApiOperation(GetOperationId(User.modelName, 'GetAll'))
+    @ApiQuery({ name: 'id', required: false })
+    async get(@Query('id') id?: string): Promise<ProfileUserViewModel[]> {
+  
+      let filter;
+  
+      if (id) {
+        filter = { _id: id };
+      }
+ 
+      try {
+        const users: User[] = await this._userService.findAll(filter);
+        return MapperUser.mapUserCollection(users);
+      }
+      catch (e) {
+        throw new HttpException(e, HttpStatus.INTERNAL_SERVER_ERROR);
+      }
     }
 
     @Post('login')

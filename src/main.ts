@@ -10,12 +10,13 @@ async function bootstrap() {
   app.enableCors();
   const hostDomain = AppModule.isDev ? `${AppModule.host}:${AppModule.port}` : AppModule.host;
 
+
   //Swagger configuration
   const options = new DocumentBuilder()
-    .setTitle('Base API')
+    .setTitle('Blog API')
     .setDescription('Base api description')
     .setVersion('0.1')
-    .addTag('Base')
+    .addBearerAuth()
     .build();
 
   const document = SwaggerModule.createDocument(app, options);

@@ -2,7 +2,7 @@ import { SchemaOptions } from 'mongoose';
 import {ApiPropertyOptional } from '@nestjs/swagger';
 import { Typegoose, prop } from '@hasezoey/typegoose';
 
-export class BaseModel extends Typegoose {
+export class BaseModel<T> extends Typegoose {
     @prop({default: Date.now()})
     createdAt?: Date;
 
