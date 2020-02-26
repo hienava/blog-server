@@ -23,13 +23,19 @@ export class AppModule implements NestModule {
 
   constructor(private readonly configurationService: ConfigurationService) {
 
-    AppModule.port = this.configurationService.get(Configuration.PORT);
-    AppModule.host = this.configurationService.get(Configuration.HOST);
+    
     AppModule.isDev = this.configurationService.isDevelopment;
+    AppModule.port = AppModule.isDev ? this.configurationService.get(Configuration.PORT) : this.configurationService.get(Configuration.PORT_PRO) ;
+    AppModule.host = AppModule.isDev ? this.configurationService.get(Configuration.HOST) : this.configurationService.get(Configuration.HOST_PRO) ;
+   
   }
 
   configure(consumer: MiddlewareConsumer) {
     consumer.apply(LoggerMiddleware).forRoutes('/');
+    console.log('puerto: ', AppModule.port);
+    console.log('Dev: ', AppModule.isDev);
+    console.log('env: ', process.env.NODE_ENV);
+   
   }
 
 

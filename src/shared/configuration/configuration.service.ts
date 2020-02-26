@@ -4,7 +4,7 @@ import { Configuration } from './configuration.enum';
 @Injectable()
 export class ConfigurationService {
 
-    static connectionString: string = process.env[Configuration.MONGO_URI];
+    static connectionString: string = process.env.NODE_ENV != 'production' ? process.env[Configuration.MONGO_URI] : process.env[Configuration.MONGO_URI_PRO] ;
     //To deploy in heroku
     private environmentHosting: string = process.env.NODE_ENV || 'development';
 
