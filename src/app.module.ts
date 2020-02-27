@@ -25,7 +25,7 @@ export class AppModule implements NestModule {
 
     
     AppModule.isDev = this.configurationService.isDevelopment;
-    AppModule.port = AppModule.isDev ? this.configurationService.get(Configuration.PORT) : this.configurationService.get(Configuration.PORT_PRO) ;
+    AppModule.port = AppModule.isDev ? this.configurationService.get(Configuration.PORT) : process.env.PORT ;
     AppModule.host = AppModule.isDev ? this.configurationService.get(Configuration.HOST) : this.configurationService.get(Configuration.HOST_PRO) ;
    
   }
