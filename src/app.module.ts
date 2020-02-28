@@ -34,11 +34,10 @@ export class AppModule implements NestModule {
 
   constructor(private readonly configurationService: ConfigurationService) {
 
-
     AppModule.isDev = this.configurationService.isDevelopment;
-    AppModule.port = AppModule.isDev ? this.configurationService.get(Configuration.PORT) : this.configurationService.get(Configuration.PORT_PRO);
-    AppModule.host = AppModule.isDev ? this.configurationService.get(Configuration.HOST) : this.configurationService.get(Configuration.HOST_PRO);
-
+    AppModule.port = AppModule.isDev ? this.configurationService.get(Configuration.PORT) : process.env.PORT ;
+    AppModule.host = AppModule.isDev ? this.configurationService.get(Configuration.HOST) : this.configurationService.get(Configuration.HOST_PRO) ;
+   
   }
 
   configure(consumer: MiddlewareConsumer) {
