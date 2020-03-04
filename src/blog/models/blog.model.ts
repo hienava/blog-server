@@ -18,9 +18,13 @@ export class Blog extends BaseModel<Blog> {
     @prop({ required: [true, 'City is required'] })
     city: string;
 
+    @prop()
     createdBy?: string;
+    @prop()
     travelDate?: string;
+    @prop()
     urlPicture?: string;
+    @prop()
     urlPhotoAlbum?: string;
 
     static get model(): ModelType<Blog> {
