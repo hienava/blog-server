@@ -44,6 +44,9 @@ export class BlogController {
     if (!params.city) {
       throw new HttpException('City is required', HttpStatus.BAD_REQUEST);
     }
+    if (!params.createdBy) {
+      throw new HttpException('CreatedBy is required', HttpStatus.BAD_REQUEST);
+    }
 
     try {
       const newBlog = await this._blogService.newBlog(params);

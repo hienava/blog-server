@@ -18,8 +18,8 @@ export class Blog extends BaseModel<Blog> {
     @prop({ required: [true, 'City is required'] })
     city: string;
 
-    @prop()
-    createdBy?: string;
+    @prop({ required: [true, 'Created By is required'] })
+    createdBy: string;
     @prop()
     travelDate?: string;
     @prop()

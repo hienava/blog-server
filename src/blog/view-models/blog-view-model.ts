@@ -7,7 +7,7 @@ export class BlogViewModel extends BaseViewModel {
     @ApiProperty() body: string;
     @ApiProperty() country: string;
     @ApiProperty() city: string;
-    @ApiPropertyOptional() createdBy?: string;
+    @ApiProperty() createdBy: string;
     @ApiPropertyOptional() travelDate?: string;
     @ApiPropertyOptional() urlPicture?: string;
     @ApiPropertyOptional() urlPhotoAlbum?: string;
