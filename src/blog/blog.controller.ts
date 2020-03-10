@@ -24,7 +24,7 @@ export class BlogController {
 
 
   @Post('create')
-  @Roles(UserRole.Admin)
+  @Roles(UserRole.User)
   @UseGuards(AuthGuard('jwt'), RolesGuard)
   @ApiCreatedResponse({ type: BlogViewModel })
   @ApiBadRequestResponse({ type: ApiException })
@@ -88,18 +88,19 @@ export class BlogController {
   }
 
   @Put()
-  @Roles(UserRole.Admin)
+  @Roles(UserRole.Admin, UserRole.User)
   @UseGuards(AuthGuard('jwt'), RolesGuard)
   @ApiResponse({ status: HttpStatus.CREATED, type: BlogViewModel })
   @ApiResponse({ status: HttpStatus.BAD_REQUEST, type: ApiException })
   @ApiOperation(GetOperationId(Blog.modelName, 'Update'))
   async update(@Body() vm: BlogViewModel): Promise<BlogViewModel> {
 
+    console.log(vm);
+
     if (!vm || vm.id) {
       throw new HttpException('Missing parameters', HttpStatus.BAD_REQUEST);
     }
-
-    const exist: BlogViewModel = await this._blogService.findById(vm.id);
+    const exist: BlogViewModel = await this._blogService.findById(vm._id);
 
     if (!exist) {
       throw new HttpException(`${vm.id} Not foound`, HttpStatus.NOT_FOUND);
@@ -114,7 +115,7 @@ export class BlogController {
     exist.urlPicture = vm.urlPicture;
 
     try {
-      const blogUpdated: Blog = await this._blogService.update(vm.id, exist);
+      const blogUpdated: Blog = await this._blogService.update(vm._id, exist);
       return MapperBlog.mapBlog(blogUpdated);
     }
     catch (e) {

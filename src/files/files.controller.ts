@@ -1,23 +1,16 @@
-import { Controller, Post, UseInterceptors, UploadedFiles, HttpException, HttpStatus, UseGuards } from '@nestjs/common';
+import { Controller, Post, UseInterceptors, UploadedFiles, HttpException, HttpStatus } from '@nestjs/common';
 import { FilesInterceptor } from '@nestjs/platform-express';
-import { ApiTags, ApiBadRequestResponse, ApiBearerAuth, ApiCreatedResponse } from '@nestjs/swagger';
+import { ApiTags, ApiBadRequestResponse, ApiCreatedResponse } from '@nestjs/swagger';
 import { ApiException } from 'src/shared/api-exception.model';
 import { FilesService } from './files.service';
 import { FileViewModel } from './view-models/file-view-model';
-import { Roles } from 'src/shared/decorators/roles.decorator';
-import { UserRole } from 'src/user/models/user-role.enum';
-import { RolesGuard } from 'src/shared/guards/roles.guard';
-import { AuthGuard } from '@nestjs/passport';
 
 @Controller('files')
-@ApiBearerAuth()
 @ApiTags('files')
 export class FilesController {
     constructor(private _fileService: FilesService){ }
 
     @Post()
-    @Roles(UserRole.Admin, UserRole.User)
-    @UseGuards(AuthGuard('jwt'), RolesGuard)
     @UseInterceptors(FilesInterceptor('photo'))
     @ApiBadRequestResponse({ type: ApiException })
     @ApiCreatedResponse({ type: FileViewModel })

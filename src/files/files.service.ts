@@ -18,19 +18,19 @@ export class FilesService {
         const cloudinary = require("cloudinary").v2;
         cloudinary.config({
             // eslint-disable-next-line @typescript-eslint/camelcase
-            cloud_name: this._configurationService.get(Configuration.CLOUD_NAME),
+            cloud_name: "dh3brdrrz",
             // eslint-disable-next-line @typescript-eslint/camelcase
-            api_key: this._configurationService.get(Configuration.API_KEY),
+            api_key: "712365938938492",
             // eslint-disable-next-line @typescript-eslint/camelcase
-            api_secret: this._configurationService.get(Configuration.API_SECRET)
+            api_secret: "o4d5k3O8dv21kH0SgTZgzDIlU04"
         });
-
         const path = files[0].path;
 
         cloudinary.uploader.upload(path).then((result) => {
             this._blogService.findOne({ _id: files[0].originalname })
                 .then(blog => {
                     if (blog != null) {
+                        console.log(result.secure_url);
                         blog.urlPicture = result.secure_url;
                         blog.save();
                     }
