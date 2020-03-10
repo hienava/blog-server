@@ -45,6 +45,7 @@ export class AppModule implements NestModule {
     console.log('puerto: ', AppModule.port);
     console.log('Dev: ', AppModule.isDev);
     console.log('env: ', process.env.NODE_ENV);
+    
 
   }
 
