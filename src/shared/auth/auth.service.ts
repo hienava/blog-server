@@ -16,8 +16,10 @@ export class AuthService {
         readonly _userService: UserService,
         private readonly _configurationService: ConfigurationService,
     ) {
+        console.log('La key es: ', _configurationService.get(Configuration.JWT_KEY));
         this.jwtOptions = { expiresIn: '12h' };
         this.jwtKey = _configurationService.get(Configuration.JWT_KEY);
+        
     }
 
     async signPayload(payload: JwtPayload): Promise<string> {

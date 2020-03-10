@@ -34,6 +34,9 @@ export class AppModule implements NestModule {
 
   constructor(private readonly configurationService: ConfigurationService) {
 
+
+    console.log('entorno: ', this.configurationService.isDevelopment);
+    console.log('String de base de datos: ', ConfigurationService.connectionString );
     AppModule.isDev = this.configurationService.isDevelopment;
     AppModule.port = AppModule.isDev ? this.configurationService.get(Configuration.PORT) : process.env.PORT ;
     AppModule.host = AppModule.isDev ? this.configurationService.get(Configuration.HOST) : this.configurationService.get(Configuration.HOST_PRO) ;
@@ -45,7 +48,7 @@ export class AppModule implements NestModule {
     console.log('puerto: ', AppModule.port);
     console.log('Dev: ', AppModule.isDev);
     console.log('env: ', process.env.NODE_ENV);
-    
+
 
   }
 
