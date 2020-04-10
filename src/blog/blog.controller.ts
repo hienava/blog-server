@@ -24,7 +24,7 @@ export class BlogController {
 
 
   @Post('create')
-  @Roles(UserRole.User)
+  @Roles(UserRole.Admin)
   @UseGuards(AuthGuard('jwt'), RolesGuard)
   @ApiCreatedResponse({ type: BlogViewModel })
   @ApiBadRequestResponse({ type: ApiException })
@@ -88,7 +88,7 @@ export class BlogController {
   }
 
   @Put()
-  @Roles(UserRole.Admin, UserRole.User)
+  @Roles(UserRole.Admin)
   @UseGuards(AuthGuard('jwt'), RolesGuard)
   @ApiResponse({ status: HttpStatus.CREATED, type: BlogViewModel })
   @ApiResponse({ status: HttpStatus.BAD_REQUEST, type: ApiException })

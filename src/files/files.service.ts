@@ -27,12 +27,14 @@ export class FilesService {
         const path = files[0].path;
 
         cloudinary.uploader.upload(path).then((result) => {
+            console.log('info subida: ', result);
             this._blogService.findOne({ _id: files[0].originalname })
                 .then(blog => {
                     if (blog != null) {
-                        console.log(result.secure_url);
+                        console.log('secure_url', result.secure_url);
                         blog.urlPicture = result.secure_url;
                         blog.save();
+                        console.log('se ha guardado en id{0}', files[0].originalname)
                     }
                     else {
                         console.log('blog no encontrado');
