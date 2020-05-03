@@ -41,6 +41,34 @@ export class MapperBlog {
       
     
             }
+
+            static mapBlogCollectionQuery(blogs: Blog[], query: string): BlogViewModel[] {
+                const blogsMapped: BlogViewModel[] = [];
+    
+                blogs.forEach(element =>  {
+                    const blog:Blog = new Blog();
+
+                    blog.title = element.title;
+                    blog.body = element.body;
+                    blog.country = element.country;
+                    blog.city = element.city;
+                    blog.createdBy = element.createdBy;
+                    blog.travelDate = element.travelDate;
+                    blog.urlPicture = element.urlPicture,
+                    blog.urlPhotoAlbum = element.urlPhotoAlbum;
+
+                    if(element.country.toLowerCase().startsWith(query))
+                    {
+                        blogsMapped.push(element);
+                    }
+                });
+    
+                return blogsMapped;
+          
+        
+                }
+
+
         
 
 

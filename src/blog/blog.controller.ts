@@ -66,7 +66,10 @@ export class BlogController {
   @ApiOperation(GetOperationId(Blog.modelName, 'GetAll'))
   @ApiQuery({ name: 'id', required: false })
   @ApiQuery({ name: 'country', required: false })
-  async get(@Query('id') id?: string,@Query('country') country?: string): Promise<BlogViewModel[]> {
+  @ApiQuery({ name: 'query', required: false })
+  async get(@Query('id') id?: string,
+            @Query('country') country?: string,
+            @Query('query') query?: string ): Promise<BlogViewModel[]> {
 
     let filter;
 
@@ -80,7 +83,16 @@ export class BlogController {
 
     try {
       const blogs: Blog[] = await this._blogService.findAll(filter);
-      return MapperBlog.mapBlogCollection(blogs);
+
+      if(query != null)
+      {
+        return MapperBlog.mapBlogCollectionQuery(blogs,query);
+
+      } else {
+        return MapperBlog.mapBlogCollection(blogs);
+      }
+
+
     }
     catch (e) {
       throw new HttpException(e, HttpStatus.INTERNAL_SERVER_ERROR);
